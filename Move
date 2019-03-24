@@ -1,0 +1,72 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+public class Move : MonoBehaviour
+{
+    public float randomMove = 0f;    //переменная для случайного движения
+    public static float timer = 1f;         //период смены поворта
+    public static float speed = 6f;    //скорость обьектов
+
+
+
+    void Start()
+    {
+        if (gameObject.tag == "unit(bad)" || gameObject.tag == "unit(good)")
+        {
+              InvokeRepeating("RandomMoving", timer, timer);
+        }
+    }
+
+    void Update()
+    {
+        transform.Translate(0, 0, speed * Time.deltaTime);
+        if (transform.position.z >= 34f)
+        {
+            DestroyGameObject();
+        }
+        if (transform.position.x >= -7f)
+        {
+            transform.Rotate(0, -90, 0);
+        }
+        else if (transform.position.x <= -30f)
+        {
+            transform.Rotate(0, 90, 0);
+        }
+    }
+
+
+    //уничтожение обьекта
+    public void DestroyGameObject()
+    {
+        if (gameObject.tag == "unit(good)")
+        {
+            FindObjectOfType<Manager>().Upscore();
+        }
+        else if (gameObject.tag == "unit(bad_front)" || gameObject.tag == "unit(bad)")
+        {
+            FindObjectOfType<Manager>().Downhealth();          
+        }
+        Destroy(this.gameObject);
+    }
+
+    //периодическое изменение движение
+    void RandomMoving()
+    {      
+            randomMove = Random.Range(1, 4);
+
+            switch (randomMove)
+            {
+                case 1:
+                    transform.rotation = Quaternion.Euler(0, -45, 0);
+                    break;
+                case 2:
+                    transform.rotation = Quaternion.Euler(0, 0, 0);
+                    break;
+                case 3:
+                    transform.rotation = Quaternion.Euler(0, 45, 0);
+                    break;
+            }
+    }
+}
