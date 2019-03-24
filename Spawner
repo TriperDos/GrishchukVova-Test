@@ -1,0 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Spawner : MonoBehaviour
+{
+    [SerializeField] private GameObject unitPrefab;  //сериализованная переменная для связи с шаблоном
+    private GameObject _unit;                        //переменная для слежения за экземпляром врага на сцене
+
+    private void Update()
+    {
+        if(_unit == null)
+        {
+            _unit = Instantiate(unitPrefab) as GameObject;
+            float anglex = Random.Range(-5, 5);
+            float anglez = Random.Range(8, 15);
+            _unit.transform.position = new Vector3(anglex, 1, anglez); 
+        }
+    }
